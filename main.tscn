@@ -1,0 +1,77 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Chat_regardant_le_ciel.jpg" type="Texture" id=2]
+[ext_resource path="res://OutlineShader.shader" type="Shader" id=3]
+
+[sub_resource type="ViewportTexture" id=1]
+flags = 5
+viewport_path = NodePath("ViewportContainer/Viewport")
+
+[sub_resource type="OpenSimplexNoise" id=2]
+period = 0.1
+persistence = 0.757
+lacunarity = 3.16
+
+[sub_resource type="NoiseTexture" id=3]
+flags = 6
+width = 256
+seamless = true
+as_normalmap = true
+bump_strength = 1.6
+noise = SubResource( 2 )
+
+[sub_resource type="ShaderMaterial" id=4]
+resource_local_to_scene = true
+shader = ExtResource( 3 )
+shader_param/line_pow = 2.0
+shader_param/line_tint = Color( 0, 0, 0, 1 )
+shader_param/wiggle_magnitude = 10.0
+shader_param/wiggle_psec = 8.0
+shader_param/noise_magnitude = 1.0
+shader_param/line_cutoff = 0.2
+shader_param/input = SubResource( 1 )
+shader_param/noise = SubResource( 3 )
+
+[node name="Root" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+size = Vector2( 1920, 1080 )
+handle_input_locally = false
+hdr = false
+render_target_update_mode = 3
+
+[node name="tex" type="Control" parent="ViewportContainer/Viewport"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="TextureRect" type="TextureRect" parent="ViewportContainer/Viewport/tex"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Render" type="ColorRect" parent="."]
+material = SubResource( 4 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
